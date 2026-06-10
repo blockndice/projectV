@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena — Aventure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="asset/css/map_arene.css">
+</head>
+<body>
+
+    <div class="bg"></div>
+    <div class="bg-lines"></div>
+
+    <header>
+        <a href="index.html" class="nav-back">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M10 3L5 8l5 5"/>
+            </svg>
+            Retour
+        </a>
+        <div class="header-title">
+            Aventure
+            <small>Parcourez les Royaumes Oubliés</small>
+        </div>
+        <div class="header-right"></div>
+    </header>
+
+    <div class="canvas-wrap">
+        <canvas id="mapCanvas"></canvas>
+    </div>
+
+    <!-- Config partagée -->
+    <script src="asset/js/characters/swordsman.js"></script>
+    <script src="asset/js/characters/skeleton.js"></script>
+    <script src="asset/js/map_data.js"></script>
+    <!-- Logique du mode aventure -->
+    <script src="asset/js/aventure.js"></script>
+
+</body>
+</html>

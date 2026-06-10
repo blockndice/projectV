@@ -5,16 +5,24 @@ const fromMap     = params.get("from") || "map_arene"; // page d'origine
 // Cherche dans la bonne config selon le mode
 const arenaConfig = fromMap === "map_mission"
     ? MISSION_CONFIG[arenaId]
-    : ARENAS_CONFIG[arenaId];
+    : fromMap === "map_aventure"
+        ? AVENTURE_CONFIG[arenaId]
+        : ARENAS_CONFIG[arenaId];
 
 // Texte du bouton selon le mode
 const btnFight = document.getElementById("btn-fight");
 if (fromMap === "map_mission") {
     btnFight.innerHTML = "⚔ &nbsp;Commencer la mission";
+} else if (fromMap === "map_aventure") {
+    btnFight.innerHTML = "⚔ &nbsp;Commencer l'aventure";
 }
 
 document.getElementById("arena-label").textContent =
-    arenaConfig ? `Arène ${arenaId} — ${arenaConfig.name}` : "Arène inconnue";
+    arenaConfig
+        ? (fromMap === "map_aventure"
+            ? `Étape ${arenaId} — ${arenaConfig.name}`
+            : `Arène ${arenaId} — ${arenaConfig.name}`)
+        : "Arène inconnue";
 
 // ── Chargement des frames idle d'un personnage ──────────────
 function loadIdleFrames(charConfig) {

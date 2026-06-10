@@ -56,6 +56,14 @@ const MISSION_CONFIG = {
     },
 };
 
+const AVENTURE_CONFIG = {
+    1: { name: "Forêt Verdoyante",  bg: "foret1.png",        enemy: "skeleton", x: 120, y: 360 },
+    2: { name: "Arène des Ruines",  bg: "arene_ruine.png",   enemy: "skeleton", x: 265, y: 255 },
+    3: { name: "Forêt Maudite",     bg: "arene_nuit.png",    enemy: "skeleton", x: 420, y: 320 },
+    4: { name: "Arène en Pierre",   bg: "arene_pierre.png",  enemy: "skeleton", x: 575, y: 185 },
+    5: { name: "Temple du Néant",   bg: "arene_neant.png",   enemy: "skeleton", x: 690, y: 90  },
+};
+
 // ============================================================
 // REGISTRE DES PERSONNAGES JOUABLES
 // ============================================================

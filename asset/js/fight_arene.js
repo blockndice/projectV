@@ -44,8 +44,11 @@ const _params   = new URLSearchParams(window.location.search);
 const _arenaId  = Number(_params.get("arena"))   || 1;
 const _playerId = _params.get("player")          || "swordsman";
 const _bgFile   = _params.get("bg")              || "arene.jpg";
+const _fromMap  = _params.get("from")            || "map_arene";
 
-const _arenaConfig  = ARENAS_CONFIG[_arenaId];
+const _arenaConfig  = _fromMap === "map_aventure"
+    ? AVENTURE_CONFIG[_arenaId]
+    : ARENAS_CONFIG[_arenaId];
 const _playerConfig = CHARACTERS_REGISTRY[_playerId]?.();
 const _enemyConfig  = CHARACTERS_REGISTRY[_arenaConfig?.enemy]?.();
 
@@ -58,7 +61,7 @@ if (_arenaConfig) {
     if (banner) banner.textContent = _arenaConfig.name;
 }
 const btnBack = document.getElementById("btn-back");
-if (btnBack) btnBack.href = `character_select.html?arena=${_arenaId}`;
+if (btnBack) btnBack.href = `character_select.html?arena=${_arenaId}&from=${_fromMap}`;
 
 // ================================
 // ASSETS — FOND
@@ -640,6 +643,10 @@ function updateEject(deltaTime) {
 
     if (ejectTimer >= EJECT_DELAY) {
         gameState = "result";
+        if (_fromMap === "map_aventure" && resultWin) {
+            const saved = parseInt(localStorage.getItem("vspell_aventure_progress") || "0", 10);
+            if (_arenaId > saved) localStorage.setItem("vspell_aventure_progress", _arenaId);
+        }
     }
 }
 
@@ -683,7 +690,7 @@ function drawResult() {
         window.location.href = window.location.href; // recharge la page
     });
     drawResultButton("Carte",         cx + 110, cy + 50, 180, 44, "#333",    "#fff",    () => {
-        window.location.href = "map_arene.html";
+        window.location.href = _fromMap === "map_aventure" ? "aventure.html" : "map_arene.html";
     });
 }
 

@@ -58,6 +58,7 @@ v0.12.00 = ennemi aléatoire en mission
 v0.12.01 = groupe ennemi + changer de cible en cliquant sur la barre de vie
 v0.12.02 = [polish positionnement des ennemis]
 v0.13.00 = ajout .png et .jpg sur lfs -> Large File Storage
+v0.13.01 = start mode aventure
 
 🎯 Feature visé
 Mode Mission : Plusieurs ennemi different lors d'un combat
@@ -77,6 +78,9 @@ map - dialogue - histoire + verse
 sécurité afk img
 spell bloc counter
 illustration character + show illustration on spell R
+aventure -> rpg world
+arene renommé en duel 1 v 1
+mission -> select team vs Boss
 
 inspiration : 
 Who Trained the Hero? -Spin of Fate- et He Is Coming

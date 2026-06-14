@@ -60,6 +60,7 @@ v0.12.02 = [polish positionnement des ennemis]
 v0.13.00 = ajout .png et .jpg sur lfs -> Large File Storage
 v0.13.01 = start mode aventure
 v0.13.02 = ajout donjon + déplacement personnage
+v0.13.03 = ajout item + combat aléatoire
 
 🎯 Feature visé
 Mode Mission : Plusieurs ennemi different lors d'un combat

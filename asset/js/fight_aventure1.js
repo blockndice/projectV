@@ -14,7 +14,7 @@ const GAME_WIDTH        = 800;
 const GAME_HEIGHT       = 450;
 const CONTAINER_PADDING = 40;
 const GROUND_Y          = 330;
-const SPRITE_SCALE      = 2;
+const SPRITE_SCALE      = 1.5;
 
 // ================================
 // CANVAS
@@ -131,8 +131,8 @@ if (btnBack) btnBack.href = "aventure1.html";
     bgR.shadowMap.type = THREE.BasicShadowMap;
 
     const bgS = new THREE.Scene();
-    bgS.background = new THREE.Color(0x08060e);
-    bgS.fog = new THREE.Fog(0x08060e, 10, 28);
+    bgS.background = new THREE.Color(0x080808);
+    bgS.fog = new THREE.Fog(0x080808, 12, 30);
 
     const bgCam = new THREE.PerspectiveCamera(65, 1, 0.1, 60);
     bgCam.position.set(0, 3.5, 9);
@@ -147,19 +147,19 @@ if (btnBack) btnBack.href = "aventure1.html";
     onBgResize();
 
     // ── Lumières ─────────────────────────────────────────────────
-    bgS.add(new THREE.AmbientLight(0x201030, 2.5));
+    bgS.add(new THREE.AmbientLight(0x504040, 2.5));
 
-    const moonLight = new THREE.DirectionalLight(0x4030a0, 1.2);
-    moonLight.position.set(-4, 12, 5);
-    moonLight.castShadow = true;
-    moonLight.shadow.mapSize.set(512, 512);
-    bgS.add(moonLight);
+    const sunLight = new THREE.DirectionalLight(0xffc060, 1.5);
+    sunLight.position.set(6, 14, 10);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(512, 512);
+    bgS.add(sunLight);
 
     // Torches (ajoutées après les piliers)
-    const torchL = new THREE.PointLight(0xff5010, 0, 10);
+    const torchL = new THREE.PointLight(0xc9a84c, 0, 8);
     torchL.position.set(-5.5, 4.5, -3);
     bgS.add(torchL);
-    const torchR = new THREE.PointLight(0xff5010, 0, 10);
+    const torchR = new THREE.PointLight(0xc9a84c, 0, 8);
     torchR.position.set( 5.5, 4.5, -3);
     bgS.add(torchR);
 
@@ -179,21 +179,22 @@ if (btnBack) btnBack.href = "aventure1.html";
 
     const texFloor = pixelTex(function (cx, px) {
         for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
-            const v = ((x*7+y*5)%11 < 2) ? "#4e3e2e"
-                    : ((x*3+y*9)%7  < 1) ? "#5e4e3c"
-                    : "#665644";
+            const v = ((x*7+y*5)%11 < 2) ? "#7a6a4e"
+                    : ((x*3+y*9)%7  < 1) ? "#8a7a5c"
+                    : "#947e62";
             px(x, y, v);
         }
-        for (let xi = 0; xi < 16; xi++) { px(xi, 0, "#38302a"); px(0, xi, "#38302a"); }
-        [[3,1],[8,5],[12,2],[2,10]].forEach(b => px(b[0], b[1], "#48402e"));
+        for (let xi = 0; xi < 16; xi++) { px(xi, 0, "#504030"); px(0, xi, "#504030"); }
+        [[3,1],[8,5],[12,2],[2,10]].forEach(b => px(b[0], b[1], "#5e5040"));
     });
     texFloor.repeat.set(6, 6);
     texFloor.wrapS = texFloor.wrapT = THREE.RepeatWrapping;
 
     const texWall = pixelTex(function (cx, px) {
         for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
-            const dark = (y % 5 === 0 || (x + Math.floor(y / 5) * 7) % 8 === 0);
-            px(x, y, dark ? "#0e0c16" : ((x+y) % 3 === 0 ? "#221e32" : "#1c1a28"));
+            const row = Math.floor(y / 4);
+            const dark = (y % 4 === 0 || (x + row * 8) % 20 === 0);
+            px(x, y, dark ? "#0a0816" : ((x+y) % 3 === 0 ? "#26223c" : "#1e1c30"));
         }
     });
     texWall.repeat.set(6, 2.5);
@@ -201,14 +202,14 @@ if (btnBack) btnBack.href = "aventure1.html";
 
     const texPillar = pixelTex(function (cx, px) {
         for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
-            px(x, y, (x === 0 || x === 15 || y === 0 || y === 15) ? "#14121e" : "#24203a");
+            px(x, y, (x === 0 || x === 15 || y === 0 || y === 15) ? "#0e0c18" : "#222038");
         }
     });
 
     const matFloor  = new THREE.MeshLambertMaterial({ map: texFloor });
     const matWall   = new THREE.MeshLambertMaterial({ map: texWall });
     const matPillar = new THREE.MeshLambertMaterial({ map: texPillar });
-    const matCap    = new THREE.MeshLambertMaterial({ color: 0x1a1830 });
+    const matCap    = new THREE.MeshLambertMaterial({ color: 0x141228 });
 
     // ── Géométries ───────────────────────────────────────────────
     // Sol
@@ -713,6 +714,7 @@ function drawEntity(entity, deltaTime) {
     const x = entity.x + (state.offsetX ?? 0) * SPRITE_SCALE;
     const y = entity.y + (state.offsetY ?? 0) * SPRITE_SCALE;
 
+    ctx.imageSmoothingEnabled = false;
     if (entity.flipX) {
         ctx.save(); ctx.scale(-1, 1);
         ctx.drawImage(frame, -(x + w), y, w, h);

@@ -880,6 +880,55 @@ const ENCOUNTER_COUNT = 1;
         camRadius = Math.max(CAM_R_MIN, Math.min(CAM_R_MAX, camRadius + e.deltaY * 0.015));
     }, { passive: false });
 
+    // ── Contrôles tactiles (tap = déplacer, 2 doigts = orbite + zoom) ───
+    let touchPrev = [];
+    let tapStartPos = null; // pour détecter un vrai tap (sans glissement)
+
+    canvas.addEventListener("touchstart", e => {
+        e.preventDefault();
+        touchPrev = Array.from(e.touches).map(t => ({ id: t.identifier, x: t.clientX, y: t.clientY }));
+        if (e.touches.length === 1) {
+            tapStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        } else {
+            tapStartPos = null;
+        }
+    }, { passive: false });
+
+    canvas.addEventListener("touchend", e => {
+        e.preventDefault();
+        // Tap 1 doigt sans déplacement → déclenche la logique click (déplacement héros)
+        if (e.changedTouches.length === 1 && e.touches.length === 0 && tapStartPos) {
+            const t = e.changedTouches[0];
+            const moved = Math.hypot(t.clientX - tapStartPos.x, t.clientY - tapStartPos.y);
+            if (moved < 10) {
+                canvas.dispatchEvent(new MouseEvent("click", {
+                    bubbles: true, cancelable: true,
+                    clientX: t.clientX, clientY: t.clientY
+                }));
+            }
+        }
+        tapStartPos = null;
+        touchPrev = Array.from(e.touches).map(t => ({ id: t.identifier, x: t.clientX, y: t.clientY }));
+    }, { passive: false });
+
+    canvas.addEventListener("touchmove", e => {
+        e.preventDefault();
+        tapStartPos = null; // glissement → annule le tap
+        const tch = Array.from(e.touches);
+        if (tch.length === 2 && touchPrev.length === 2) {
+            const p1 = touchPrev.find(p => p.id === tch[0].identifier) || touchPrev[0];
+            const p2 = touchPrev.find(p => p.id === tch[1].identifier) || touchPrev[1];
+            const cx = (tch[0].clientX + tch[1].clientX) / 2;
+            const cy = (tch[0].clientY + tch[1].clientY) / 2;
+            camTheta -= (cx - (p1.x + p2.x) / 2) * 0.005;
+            camPhi = Math.max(CAM_PHI_MIN, Math.min(CAM_PHI_MAX, camPhi + (cy - (p1.y + p2.y) / 2) * 0.005));
+            const dNow  = Math.hypot(tch[0].clientX - tch[1].clientX, tch[0].clientY - tch[1].clientY);
+            const dPrev = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            camRadius = Math.max(CAM_R_MIN, Math.min(CAM_R_MAX, camRadius - (dNow - dPrev) * 0.03));
+        }
+        touchPrev = tch.map(t => ({ id: t.identifier, x: t.clientX, y: t.clientY }));
+    }, { passive: false });
+
     loadHeroSprites();
     loadEnemySprites();
     requestAnimationFrame(loop);

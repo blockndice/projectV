@@ -31,6 +31,7 @@ html, body {
 
 canvas {
     display: block;
+    touch-action: none;
     /* Pas de border sur le canvas de jeu — immersion totale */
     box-shadow:
         0 0 0 1px rgba(0,0,0,0.9),
@@ -78,4 +79,11 @@ canvas {
     text-transform: uppercase;
     padding: 8px 20px;
     background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+}
+
+/* ── Mobile / tablette paysage ── */
+@media (orientation: landscape) and (max-height: 520px) {
+    .back-overlay { bottom: 8px; left: 10px; }
+    .btn-back { font-size: 10px; padding: 5px 10px; }
+    .arena-banner { font-size: 9px; letter-spacing: 2px; padding: 5px 14px; }
 }

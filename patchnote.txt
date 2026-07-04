@@ -64,6 +64,7 @@ v0.13.03 = ajout item + combat aléatoire
 v0.14.00 = ajout fight_aventure1.html + ennemis sur la map aventure
 v0.14.01 = map_aventure1 rendu 3D pixel-art via Three.js + caméra orbitale + arène 3D en fond de combat
 v0.14.02 = sprites ancrés au sol (center.set 0.5,0) + textures 32px + contrôles caméra-relatifs + ennemis disparaissent après victoire
+v0.15.00 = mode responsive
 
 🎯 Feature visé
 Mode Mission : Plusieurs ennemi different lors d'un combat
